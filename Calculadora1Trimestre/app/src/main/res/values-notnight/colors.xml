@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="buttonScientific">#FFDA37</color>
+    <color name="buttonNumbers">#FFFFFF</color>
+    <color name="colorTextNumbers">#666666</color>
+    <color name="colorTextScientific">#000000</color>
+    <color name="colorbackground">#F0F0F0</color>
+    <color name="colorButtonOperations">#F89824</color>
+    <color name="colorTextOperations">#FFFFFF</color>
+    <color name="colorbuttonEquals">#FFDA37</color>
+    <color name="colorTextResult">#505050</color>
+</resources>
