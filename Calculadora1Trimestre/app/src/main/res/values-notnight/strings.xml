@@ -21,5 +21,5 @@
     <string name="pi">𝜋</string>
     <string name="pow">xⁿ</string>
     <string name="cos">Cos</string>
-    <string name="sen">Sen</string>
+    <string name="sin">Sin</string>
 </resources>

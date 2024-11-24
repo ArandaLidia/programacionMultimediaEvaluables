@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(), OnClickListener {
         binding.buttonPI?.setOnClickListener(this)
         binding.buttonPow?.setOnClickListener(this)
         binding.buttonCos?.setOnClickListener(this)
-        binding.buttonSen?.setOnClickListener(this)
+        binding.buttonSin?.setOnClickListener(this)
         binding.buttonTan?.setOnClickListener(this)
     }
 
@@ -77,27 +77,35 @@ class MainActivity : AppCompatActivity(), OnClickListener {
             binding.buttonC.id -> {
                 deleteAll()
             }
+
             binding.buttonCe.id -> {
                 delEntry()
             }
+
             binding.buttonDelete.id -> {
                 del()
             }
+
             binding.buttonDivide.id -> {
                 setOperator("/")
             }
+
             binding.buttonMultiply.id -> {
                 setOperator("*")
             }
+
             binding.buttonSubtract.id -> {
                 setOperator("-")
             }
+
             binding.buttonAdd.id -> {
                 setOperator("+")
             }
+
             binding.buttonResult.id -> {
                 calculateResult()
             }
+
             binding.buttonPercentage.id -> {
                 handlePercentage()
             }
@@ -105,47 +113,61 @@ class MainActivity : AppCompatActivity(), OnClickListener {
             binding.buttonOne.id -> {
                 writeNumbers("1")
             }
+
             binding.buttonTwo.id -> {
                 writeNumbers("2")
             }
+
             binding.buttonThree.id -> {
                 writeNumbers("3")
             }
+
             binding.buttonFour.id -> {
                 writeNumbers("4")
             }
+
             binding.buttonFive.id -> {
                 writeNumbers("5")
             }
+
             binding.buttonSix.id -> {
                 writeNumbers("6")
             }
+
             binding.buttonSeven.id -> {
                 writeNumbers("7")
             }
+
             binding.buttonEight.id -> {
                 writeNumbers("8")
             }
+
             binding.buttonNine.id -> {
                 writeNumbers("9")
             }
+
             binding.buttonZero.id -> {
                 writeNumbers("0")
             }
-            binding.buttonPI?.id ->{
 
+            binding.buttonPI?.id -> {
+                pi()
             }
-            binding.buttonPow?.id->{
 
+            binding.buttonPow?.id -> {
+                pow()
             }
-            binding.buttonSen?.id ->{
 
+            binding.buttonSin?.id -> {
+                sin()
             }
-            binding.buttonCos?.id ->{
 
+            binding.buttonCos?.id -> {
+                cos()
             }
-            binding.buttonTan?.id ->{
 
+            binding.buttonTan?.id -> {
+                tan()
             }
         }
     }
@@ -190,63 +212,170 @@ class MainActivity : AppCompatActivity(), OnClickListener {
     private fun setOperator(operator: String) {
         if (lastResult != null) {
             firstOperand = lastResult
+            lastResult = null
         } else if (firstOperand == null) {
             firstOperand = binding.textCounter.text.toString().toDoubleOrNull()
         }
 
+        if (firstOperand == null) {
+            binding.textCounter.text = "Error"
+            return
+        }
+
         currentOperation = operator
-        binding.textCounter.text = "${binding.textCounter.text} $operator"
+        binding.textCounter.text = "${formatResult(firstOperand!!)} $operator"
         isNewOperation = true
     }
 
-    // Al dar a =
-    private fun calculateResult() {
 
-        if (firstOperand == null) return
-
-        if (secondOperand == null) {
-            secondOperand = binding.textCounter.text.toString().toDoubleOrNull()
-        }
-
-        val result = when (currentOperation) {
-            "+" -> firstOperand!! + secondOperand!!
-            "-" -> firstOperand!! - secondOperand!!
-            "*" -> firstOperand!! * secondOperand!!
-            "/" -> if (secondOperand != 0.0) firstOperand!! / secondOperand!! else "Error"
-            else -> "Error"
-        }
-
-        val resultString = when (result) {
-            is Double -> if (result % 1 == 0.0) result.toInt().toString() else result.toString()
-            else -> "Error"
-        }
-
-        binding.textCounter.text = resultString
-
-        lastResult = result.toString().toDoubleOrNull()
-
-        secondOperand = null
-        currentOperation = null
-        isNewOperation = true
-    }
 
     // porcentaje
     private fun handlePercentage() {
         if (firstOperand != null) {
-            val percentageValue = binding.textCounter.text.toString().toDoubleOrNull()
+            val percentageAmount = binding.textCounter.text.toString().toDoubleOrNull()
 
-            if (percentageValue != null) {
-                val percentageAmount = firstOperand!! * (percentageValue / 100)
-
-                firstOperand = firstOperand!! + percentageAmount
-                binding.textCounter.text = firstOperand.toString()
-
-                secondOperand = null
-                currentOperation = null
+            if (percentageAmount != null) {
+                // Calcular el porcentaje basado en el primer operando
+                lastResult = firstOperand!! * (percentageAmount / 100)
+                binding.textCounter.text = formatResult(lastResult!!)
                 isNewOperation = true
             }
         }
     }
 
 
+
+    //Metodo pi
+    private fun pi() {
+        val pi = Math.PI
+
+        if (isNewOperation) {
+            binding.textCounter.text = pi.toString()
+            isNewOperation = false
+        } else {
+            binding.textCounter.text = "${binding.textCounter.text}$pi"
+        }
+    }
+
+    private fun sin() {
+        val currentValue = binding.textCounter.text.toString().toDoubleOrNull()
+        if (currentValue != null) {
+            val value = Math.toRadians(currentValue)
+            val result = Math.sin(value)
+            binding.textCounter.text = formatResult(result)
+            isNewOperation = true
+        }
+    }
+
+    private fun formatResult(value: Double): String {
+        return if (value % 1 == 0.0) {
+            value.toInt().toString()
+        } else {
+            value.toString()
+        }
+
+    }
+
+    private fun cos() {
+        val currentValue = binding.textCounter.text.toString().toDoubleOrNull()
+        if (currentValue != null) {
+            val value = Math.toRadians(currentValue)
+            val result = Math.cos(value)
+            binding.textCounter.text = formatResult(result)
+            isNewOperation = true
+        }
+    }
+
+    private fun tan() {
+        val currentValue = binding.textCounter.text.toString().toDoubleOrNull()
+        if (currentValue != null) {
+            val value = Math.toRadians(currentValue)
+            val result = Math.tan(value)
+            binding.textCounter.text = formatResult(result)
+            isNewOperation = true
+        }
+    }
+
+    private fun pow() {
+        val currentText = binding.textCounter.text.toString()
+        if (currentOperation == "^") {
+            val secondOperand = currentText.toDoubleOrNull()
+
+            if (secondOperand != null) {
+
+                val result = Math.pow(firstOperand!!, secondOperand)
+                binding.textCounter.text = formatResult(result)
+
+
+                firstOperand = result
+                currentOperation = null
+                isNewOperation = true
+            } else {
+                binding.textCounter.text = "Error"
+            }
+        } else {
+
+            val firstValue = currentText.toDoubleOrNull()
+
+            if (firstValue != null) {
+                firstOperand = firstValue
+                currentOperation = "^"
+                binding.textCounter.text = "${formatResult(firstOperand!!)} ^"
+                isNewOperation = true
+            } else {
+                binding.textCounter.text = "Error"
+            }
+        }
+    }
+
+    private fun calculateResult() {
+        if (firstOperand == null) return
+
+        // Si no tenemos un segundo operando, lo tomamos del texto actual
+        if (secondOperand == null) {
+            secondOperand = binding.textCounter.text.toString().toDoubleOrNull()
+        }
+
+        // Validar si el segundo operando es válido
+        if (secondOperand == null && currentOperation != "%") { // Permitir '%' sin segundo operando
+            binding.textCounter.text = "Error"
+            return
+        }
+
+        // Realizar el cálculo según el operador actual
+        val result = when (currentOperation) {
+            "+" -> firstOperand!! + secondOperand!!
+            "-" -> firstOperand!! - secondOperand!!
+            "*" -> firstOperand!! * secondOperand!!
+            "/" -> if (secondOperand != 0.0) firstOperand!! / secondOperand!! else Double.NaN
+            "^" -> Math.pow(firstOperand!!, secondOperand!!)
+            "%" -> {
+                // El porcentaje solo usa `firstOperand` (ignora `secondOperand` para simplificar)
+                firstOperand!! * (secondOperand ?: 0.0) / 100
+            }
+            else -> Double.NaN
+        }
+
+        // Validar si el resultado es válido
+        if (result.isNaN() || result.isInfinite()) {
+            binding.textCounter.text = "Error"
+            return
+        }
+
+        // Mostrar el resultado formateado
+        binding.textCounter.text = formatResult(result)
+
+        // Guardar el último resultado
+        lastResult = result
+
+        // Reiniciar valores para la siguiente operación
+        firstOperand = result
+        secondOperand = null
+        currentOperation = null
+        isNewOperation = true
+    }
+
+
 }
+
+
