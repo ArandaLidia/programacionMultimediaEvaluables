@@ -188,7 +188,7 @@ class MainActivity : AppCompatActivity(), OnClickListener {
         isNewOperation = true
     }
 
-    // Borrar un solo dígito
+
     private fun del() {
         val currentText = binding.textCounter.text.toString()
         if (currentText.length > 1) {
@@ -235,7 +235,6 @@ class MainActivity : AppCompatActivity(), OnClickListener {
             val percentageAmount = binding.textCounter.text.toString().toDoubleOrNull()
 
             if (percentageAmount != null) {
-                // Calcular el porcentaje basado en el primer operando
                 lastResult = firstOperand!! * (percentageAmount / 100)
                 binding.textCounter.text = formatResult(lastResult!!)
                 isNewOperation = true
@@ -331,18 +330,17 @@ class MainActivity : AppCompatActivity(), OnClickListener {
     private fun calculateResult() {
         if (firstOperand == null) return
 
-        // Si no tenemos un segundo operando, lo tomamos del texto actual
+
         if (secondOperand == null) {
             secondOperand = binding.textCounter.text.toString().toDoubleOrNull()
         }
 
-        // Validar si el segundo operando es válido
-        if (secondOperand == null && currentOperation != "%") { // Permitir '%' sin segundo operando
+        if (secondOperand == null && currentOperation != "%") {
             binding.textCounter.text = "Error"
             return
         }
 
-        // Realizar el cálculo según el operador actual
+
         val result = when (currentOperation) {
             "+" -> firstOperand!! + secondOperand!!
             "-" -> firstOperand!! - secondOperand!!
@@ -350,25 +348,22 @@ class MainActivity : AppCompatActivity(), OnClickListener {
             "/" -> if (secondOperand != 0.0) firstOperand!! / secondOperand!! else Double.NaN
             "^" -> Math.pow(firstOperand!!, secondOperand!!)
             "%" -> {
-                // El porcentaje solo usa `firstOperand` (ignora `secondOperand` para simplificar)
                 firstOperand!! * (secondOperand ?: 0.0) / 100
             }
             else -> Double.NaN
         }
 
-        // Validar si el resultado es válido
         if (result.isNaN() || result.isInfinite()) {
             binding.textCounter.text = "Error"
             return
         }
 
-        // Mostrar el resultado formateado
+
         binding.textCounter.text = formatResult(result)
 
-        // Guardar el último resultado
+
         lastResult = result
 
-        // Reiniciar valores para la siguiente operación
         firstOperand = result
         secondOperand = null
         currentOperation = null
