@@ -126,7 +126,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.20"
             android:backgroundTint="@color/buttonNumbers"
-            android:textColor="@color/colorTextScientific"
+            android:textColor="@color/colorTextNumbers"
             android:text="@string/_9"
             android:layout_margin="1dp"
             android:textSize="23sp"  />
